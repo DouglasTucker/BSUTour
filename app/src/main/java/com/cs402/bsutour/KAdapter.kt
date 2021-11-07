@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 
-public class KAdapter(context: Context, var practice: ArrayList<String>, var spractice: ArrayList<Boolean>)
+public class KAdapter(context: Context, var practice: ArrayList<TourLocation>)
     : RecyclerView.Adapter<KAdapter.PracticeHolder>() {
 
 
@@ -25,10 +25,10 @@ public class KAdapter(context: Context, var practice: ArrayList<String>, var spr
     override fun onBindViewHolder(holder: PracticeHolder, position: Int) {
         val apractice = practice[position]
         holder.apply {
-            titleTextView.text = apractice
+            titleTextView.text = apractice.name
 
             var sscolor = "#ffffff"
-            if (spractice[position]) {
+            if (practice[position].selected) {
                 sscolor = "#cccccc"
             }
             titleTextView.setBackgroundColor(Color.parseColor(sscolor))
@@ -49,9 +49,9 @@ public class KAdapter(context: Context, var practice: ArrayList<String>, var spr
             //toggle selection, color shows whats selected
             var apos = getBindingAdapterPosition()
 
-            kSelect = spractice[apos]
+            kSelect = practice[apos].selected
             kSelect = !kSelect  //flip boolean when clicked on
-            spractice[apos] = kSelect // save selectness
+            practice[apos].selected = kSelect // save selectness
             var sscolor = "#ffffff"
             if (kSelect) {
                 sscolor = "#cccccc"

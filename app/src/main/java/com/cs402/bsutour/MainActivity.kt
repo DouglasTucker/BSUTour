@@ -1,17 +1,23 @@
 package com.cs402.bsutour
 
+import android.app.Activity
 import android.content.DialogInterface
+import android.content.Intent
+import android.content.IntentSender
+import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.text.InputType
-import android.widget.Button
-import android.widget.EditText
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-import android.widget.Toast
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -20,175 +26,259 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import android.widget.Spinner
+import androidx.core.app.ActivityCompat
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
+import kotlinx.android.parcel.Parcelize
+import androidx.activity.result.ActivityResultCallback
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback {
+import androidx.activity.result.contract.ActivityResultContracts
 
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+
+class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private lateinit var kRecyclerView: RecyclerView
-    val PracticeList = arrayListOf<String>("1.\tStudent Union Building", "2.\tRec Center","3.\tAlbertsons Stadium","4.\tFirst-Year Village", "5.\tAlbertsons Library", "6.\tThe Quad","7.\tFriendship Bridge","8.\tInteractive learning Center","9.\tCenter for Visual Arts","10.\tMicron Business and Economics Building","11.\tB Plaza")
-    val SPracticeList = arrayListOf<Boolean>(false, false, false, false, false, false, false, false, false, false, false)
-    val LPracticeList = arrayListOf<String>( "43.60141111,-116.20187222", "43.60053889,-116.20010000", "43.60198889,-116.19707778", "43.60398611,-116.19969444", "43.60393611,-116.20353333", "43.60429444,-116.20435000", "43.60509444,-116.20379444", "43.60494167,-116.20614444","43.60625833,-116.20926667","43.60567778,-116.20950000","43.60341111,-116.20494444")
+    private lateinit var map: GoogleMap
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var lastLocation: Location
+    private lateinit var locationCallback: LocationCallback
+    private lateinit var locationRequest: LocationRequest
+    private var locationUpdateState = false
 
-    var acount = 0;
-    var joinstring = ""
-    var initposition = 0;
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+        // 3 request code passes to on activity result
+        private const val REQUEST_CHECK_SETTINGS = 2
+    }
+
+
+    val LocationList = ListModel()
+
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Log.d("StateChange", "enterOnCreate")
+
 
         kRecyclerView =
             findViewById(R.id.Practice_recycler_view) as RecyclerView
         kRecyclerView.layoutManager = LinearLayoutManager(this)
 
+
         //insert adapter here
-        val kadapter: KAdapter = KAdapter(this, PracticeList, SPracticeList)
+        var kadapter: KAdapter = KAdapter(this, LocationList)
 
         kRecyclerView.setAdapter(kadapter)
 
+
         //map stuff
 
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
 
-
-
-//        val button: Button = findViewById(R.id.addbutton)
-//        //set on-click listener
-//        button.setOnClickListener {
-//            // build alert dialog
-//            val dialogBuilder = AlertDialog.Builder(this)
-//            val m_Text = ""
-//            val input = EditText(this)
-//            input.setHint("Enter Text")
-//            input.inputType = InputType.TYPE_CLASS_TEXT
-//            dialogBuilder.setView(input)
-//
-//                .setCancelable(false)
-//
-//                .setPositiveButton("Proceed", DialogInterface.OnClickListener { dialog, which ->
-//                    var m_Text = input.text.toString()
-//                    if (m_Text.isNullOrEmpty()) {
-//                        acount += 1
-//                        m_Text = "Item $acount"
-//                    }
-//                    SPracticeList.add(false)
-//                    PracticeList.add(m_Text)
-//                    kadapter.notifyDataSetChanged()
-//                })
-//
-//                .setNegativeButton("Cancel", DialogInterface.OnClickListener {
-//                        dialog, id -> dialog.cancel()
-//                })
-//
-//            val alert = dialogBuilder.create()
-//            alert.setTitle("Enter new item")
-//
-//            alert.show()
-//
-//        }
-
-//        val rembutton: Button = findViewById(R.id.rembutton)
-//        //set on-click listener
-//        rembutton.setOnClickListener {
-//            for (i in SPracticeList.size downTo 1) {
-//                if(SPracticeList[i-1]) {
-//                    SPracticeList.removeAt(i-1)
-//                    PracticeList.removeAt(i-1)
-//                }
-//            }
-//            kadapter.notifyDataSetChanged()
-//        }
-
-//        val joinbutton: Button = findViewById(R.id.joinbutton)
-//        //set on-click listener
-//        joinbutton.setOnClickListener {
-//
-//            for (i in SPracticeList.size downTo 1) {
-//                if(SPracticeList[i-1]) {
-//                    initposition = i-1
-//                    joinstring = PracticeList.get(i-1).plus(", ").plus(joinstring)
-//                    SPracticeList.removeAt(i-1)
-//                    PracticeList.removeAt(i-1)
-//                }
-//            }
-//            if (!joinstring.isNullOrEmpty()) {
-//                joinstring = joinstring.dropLast(2)
-//                SPracticeList.add(initposition, false)
-//                PracticeList.add(initposition, joinstring)
-//                joinstring = ""
-//                initposition = 0;
-//                kadapter.notifyDataSetChanged()
-//            }
-//
-//            val splitbutton: Button = findViewById(R.id.splitbutton)
-//            //set on-click listener
-//            splitbutton.setOnClickListener {
-//                var delimeter = ", "
-//                for (i in SPracticeList.size downTo 1) { // find selected items
-//                    if(SPracticeList[i-1]) { // if item selected
-//                        var parts = PracticeList[i-1].split(delimeter) //list of parts
-//
-//                        if (!parts.isNullOrEmpty()){
-//
-//                            for(j in parts.size downTo 1){ //adding for each part
-//                                SPracticeList.add(i, false)
-//                                PracticeList.add(i, parts[j-1])
-//                            }
-//
-//                            SPracticeList.removeAt(i-1)
-//                            PracticeList.removeAt(i-1)
-//                        }
-//
-//                    }
-//                }
-//                kadapter.notifyDataSetChanged()
-//            }
-//
-//        }
-
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
-    // [END maps_marker_get_map_async]
-    // [END_EXCLUDE]
 
-    // [START maps_marker_on_map_ready_add_marker]
+
+
     override fun onMapReady(googleMap: GoogleMap) {
-//        val latlongf = getIntent().getStringExtra("MARKER")
-//        val latlong = latlongf.split(",")
-        for(i in 1 until 12) {
-            val latlongf = LPracticeList[i-1]
+        map = googleMap
+        map.getUiSettings().setZoomControlsEnabled(true)
+        map.setOnMarkerClickListener(this)
+
+        val test = LocationList.size
+
+        for(i in 0 until LocationList.size) {
+            val latlongf = LocationList[i].Location
             val latlong = latlongf.split(",")
             val latitude = latlong[0].toDouble()
             val longitude = latlong[1].toDouble()
             var pos = LatLng(latitude, longitude)
 
-            googleMap.addMarker(
+            var j = i +1
+            map.addMarker(
                 MarkerOptions()
                     .position(pos)
-                    .title(i.toString())
+                    .title(j.toString())
+                    .snippet(LocationList[i].name.substringAfterLast("."))
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
             )
-
-
-
         }
 
-//        val latlong = "43.60141111,-116.20187222".split(",")
-//        val latitude = latlong[0].toDouble()
-//        val longitude = latlong[1].toDouble()
-        var StudentUnion = LatLng(43.60141111, -116.20187222)
-//
-//        googleMap.addMarker(
-//            MarkerOptions()
-//                .position(sydney)
-//                .title("Student Union Building")
-//        )
+       // starting Location, student union building
+        var latitude = 43.60141111
+        var longitude = -116.20187222
+
+        //set starting location for when map loads
+        var startLocation = LatLng(latitude, longitude)
+        var zoomlevel = 16.5f
+
         // [START_EXCLUDE silent]
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(StudentUnion))
-        googleMap.animateCamera( CameraUpdateFactory.zoomTo( 16.5f ) );
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation,zoomlevel))
+        //map.animateCamera( CameraUpdateFactory.zoomTo( 16.5f ) );
         // [END_EXCLUDE]
+
+        setUpMap() // special
     }
-    // [END maps_marker_on_map_ready_add_marker]
+
+    // MAP STUFF
+
+    //check if app already has permission to use user location, if not it prompts user for permission
+    private fun setUpMap() {
+        if (ActivityCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+            return
+        }
+
+        map.isMyLocationEnabled = true
+
+        fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
+            // Got last known location. In some rare situations this can be null.
+            if (location != null) {
+                lastLocation = location //get last known location
+                val currentLatLng = LatLng(location.latitude, location.longitude)
+
+// Add check to see if they are on campus, otherwise go to defualt location. geo fences?
+
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16.5f))
+            }
+        }
+    }
+
+    override fun onMarkerClick(p0: Marker): Boolean {
+        return false
+    }
+
+
+    //Not currently working, several methods depreciated
+/*    private fun startLocationUpdates() {
+        //1
+        if (ActivityCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE)
+            return
+        }
+        //2
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null *//* Looper *//*)
+    }*/
+
+    /*private fun createLocationRequest() {
+        // 1
+        locationRequest = LocationRequest.create()
+        // 2
+        locationRequest.interval = 10000
+        // 3
+        locationRequest.fastestInterval = 5000
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+
+        val builder = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
+
+        // 4
+        val client = LocationServices.getSettingsClient(this)
+        val task = client.checkLocationSettings(builder.build())
+
+        // 5
+        task.addOnSuccessListener {
+            locationUpdateState = true
+            startLocationUpdates()
+        }
+        task.addOnFailureListener { e ->
+            // 6
+            if (e is ResolvableApiException) {
+                // Location settings are not satisfied, but this can be fixed
+                // by showing the user a dialog.
+                try {
+                    // Show the dialog by calling startResolutionForResult(),
+                    // and check the result in onActivityResult().
+                    e.startResolutionForResult(this@MainActivity ,
+                        REQUEST_CHECK_SETTINGS)
+                } catch (sendEx: IntentSender.SendIntentException) {
+                    // Ignore the error.
+                }
+            }
+        }
+    }*/
+
+
+
+//    onActivityResult depreciated, need to find alternative
+    // 1
+/*    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CHECK_SETTINGS) {
+            if (resultCode == Activity.RESULT_OK) {
+                locationUpdateState = true
+                startLocationUpdates()
+            }
+        }
+    }*/
+
+// LISTS for locations
+
+
+    fun onDestory() {
+        super.onDestroy()
+        Log.d("StateChange","enterOnDestroy")
+    }
+
+    // 2
+    override fun onPause() {
+        super.onPause()
+//        fusedLocationClient.removeLocationUpdates(locationCallback)
+        Log.d("StateChange","enterOnPause")
+    }
+
+    // 3
+    public override fun onResume() {
+        super.onResume()
+        /*if (!locationUpdateState) {
+            startLocationUpdates()
+        }*/
+        Log.d("StateChange", "EnterOnResume")
+    }
+
+
+
+    override fun onSaveInstanceState(outState: Bundle)
+    {
+        super.onSaveInstanceState(outState)
+        Log.d("StateChange", "enterOnSaveInstanceState")
+        // in here we need to save out the data model as a bundle
+
+/*        //save current map state
+        Log.d("Saving", "saved current location in bundle")
+
+        outState.putDouble("long", )
+        outState.putDouble("lat", )
+        outState.putFloat("Zoom", "")
+
+
+        //saving the entire data model!!!!!
+        outState.putParcelable("Places", LocationList)*/
+
+
+        //Log.d("BSUTour", "SAVED Locationlist in bundle")
+        //outState.putPar
+
+
+
+    }
+
+
+
+
 }

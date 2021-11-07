@@ -8,4 +8,10 @@
     <string name="google_maps_key">AIzaSyCP7aqy2GOKWVX-T8IY4wtuMZZDqgxGcRU</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="TourOptions">
+        <item>Simple tour</item>
+        <item>Campus food</item>
+        <item>Computer labs</item>
+    </string-array>
+
 </resources>
