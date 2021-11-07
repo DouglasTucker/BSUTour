@@ -22,10 +22,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
 import android.widget.Spinner
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.common.api.ResolvableApiException
@@ -37,6 +33,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import com.google.android.gms.maps.model.*
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -46,6 +43,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private lateinit var lastLocation: Location
     private lateinit var locationCallback: LocationCallback
     private lateinit var locationRequest: LocationRequest
+    private lateinit var camp: CameraPosition
+    private var newmap = true
     private var locationUpdateState = false
 
     companion object {
@@ -54,9 +53,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         private const val REQUEST_CHECK_SETTINGS = 2
     }
 
-
     val LocationList = ListModel()
-
 
 
 
@@ -78,6 +75,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         kRecyclerView.setAdapter(kadapter)
 
 
+        if (savedInstanceState != null) {
+            if(savedInstanceState.containsKey("myPosition")) {
+                camp = savedInstanceState.getParcelable<CameraPosition>("myPosition")!!
+                newmap = false
+            }
+        }
+
+
         //map stuff
 
         val mapFragment = supportFragmentManager
@@ -93,6 +98,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         map.getUiSettings().setZoomControlsEnabled(true)
+        map.getUiSettings().setMapToolbarEnabled(false);
+        map.cameraPosition
         map.setOnMarkerClickListener(this)
 
         val test = LocationList.size
@@ -103,29 +110,49 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             val latitude = latlong[0].toDouble()
             val longitude = latlong[1].toDouble()
             var pos = LatLng(latitude, longitude)
+            if(LocationList[i].visited){
+            }
+
 
             var j = i +1
             map.addMarker(
-                MarkerOptions()
-                    .position(pos)
-                    .title(j.toString())
-                    .snippet(LocationList[i].name.substringAfterLast("."))
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                if(LocationList[i].visited){
+                    MarkerOptions()
+                        .position(pos)
+                        .title(j.toString())
+                        .snippet(LocationList[i].name.substringAfterLast("."))
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                } else{
+                    MarkerOptions()
+                        .position(pos)
+                        .title(j.toString())
+                        .snippet(LocationList[i].name.substringAfterLast("."))
+                        .icon(BitmapDescriptorFactory.defaultMarker(15f))
+                }
+
+
             )
         }
 
-       // starting Location, student union building
-        var latitude = 43.60141111
-        var longitude = -116.20187222
 
-        //set starting location for when map loads
-        var startLocation = LatLng(latitude, longitude)
-        var zoomlevel = 16.5f
 
-        // [START_EXCLUDE silent]
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation,zoomlevel))
-        //map.animateCamera( CameraUpdateFactory.zoomTo( 16.5f ) );
-        // [END_EXCLUDE]
+        if (newmap) {
+            // starting Location, student union building
+            val latitude = 43.60141111
+            val longitude = -116.20187222
+
+            //set starting location for when map loads
+            val startLocation = LatLng(latitude, longitude)
+            val zoomlevel = 16.5f
+
+            // [START_EXCLUDE silent]
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation,zoomlevel))
+            //map.animateCamera( CameraUpdateFactory.zoomTo( 16.5f ) );
+            // [END_EXCLUDE]
+        } else{
+            map.moveCamera(CameraUpdateFactory.newCameraPosition(camp))
+        }
+
 
         setUpMap() // special
     }
@@ -151,7 +178,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
 // Add check to see if they are on campus, otherwise go to defualt location. geo fences?
 
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16.5f))
+                //map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16.5f))
             }
         }
     }
@@ -259,6 +286,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         Log.d("StateChange", "enterOnSaveInstanceState")
         // in here we need to save out the data model as a bundle
 
+
+        outState.putParcelable("myPosition", map.cameraPosition)
 /*        //save current map state
         Log.d("Saving", "saved current location in bundle")
 
