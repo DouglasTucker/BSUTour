@@ -1,6 +1,7 @@
 package com.cs402.bsutour
 
 import android.content.Context
+import android.content.IntentSender
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.google.android.gms.maps.CameraUpdateFactory
 
 
 public class KAdapter(context: Context, var practice: ArrayList<TourLocation>)
@@ -32,7 +34,6 @@ public class KAdapter(context: Context, var practice: ArrayList<TourLocation>)
                 sscolor = "#cccccc"
             }
             titleTextView.setBackgroundColor(Color.parseColor(sscolor))
-
         }
     }
     //inner class important
@@ -57,8 +58,6 @@ public class KAdapter(context: Context, var practice: ArrayList<TourLocation>)
                 sscolor = "#cccccc"
             }
             titleTextView.setBackgroundColor(Color.parseColor(sscolor))
-
         }
     }
-
 }

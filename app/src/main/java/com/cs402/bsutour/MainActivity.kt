@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
 import android.os.PersistableBundle
 import android.util.Log
 import android.text.InputType
@@ -38,22 +39,19 @@ import com.google.android.gms.maps.model.*
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private lateinit var kRecyclerView: RecyclerView
-    private lateinit var map: GoogleMap
+    lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var lastLocation: Location
-    private lateinit var locationCallback: LocationCallback
-    private lateinit var locationRequest: LocationRequest
     private lateinit var camp: CameraPosition
     private var newmap = true
-    private var locationUpdateState = false
+    lateinit var geofencingClient: GeofencingClient
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
-        // 3 request code passes to on activity result
-        private const val REQUEST_CHECK_SETTINGS = 2
     }
 
-    val LocationList = ListModel()
+
+    var LocationList = ListModel()
 
 
 
@@ -63,6 +61,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         setContentView(R.layout.activity_main)
         Log.d("StateChange", "enterOnCreate")
 
+
+        geofencingClient = LocationServices.getGeofencingClient(this)
 
         kRecyclerView =
             findViewById(R.id.Practice_recycler_view) as RecyclerView
@@ -75,10 +75,29 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         kRecyclerView.setAdapter(kadapter)
 
 
+
+        /*option = findViewById(R.id.tourselect) as Spinner
+
+        val options = arrayOf("Simple Tour", "Campus Food", "Computer labs")
+        option.adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, options)
+
+        option.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO()
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                TODO()
+            }
+        }*/
+
+
+
+        // Load saved data
         if (savedInstanceState != null) {
             if(savedInstanceState.containsKey("myPosition")) {
                 camp = savedInstanceState.getParcelable<CameraPosition>("myPosition")!!
-                newmap = false
+                newmap = false //on map ready now knows to load save instead of default.
             }
         }
 
@@ -97,46 +116,43 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
+
+        //enable zoom and disables directions
         map.getUiSettings().setZoomControlsEnabled(true)
         map.getUiSettings().setMapToolbarEnabled(false);
-        map.cameraPosition
+
         map.setOnMarkerClickListener(this)
 
-        val test = LocationList.size
-
+        //goes through model list and adds markers to map
         for(i in 0 until LocationList.size) {
             val latlongf = LocationList[i].Location
             val latlong = latlongf.split(",")
             val latitude = latlong[0].toDouble()
             val longitude = latlong[1].toDouble()
             var pos = LatLng(latitude, longitude)
-            if(LocationList[i].visited){
-            }
 
 
-            var j = i +1
+            var j = i +1   //accounts for difference in index and location number
             map.addMarker(
-                if(LocationList[i].visited){
+                if(LocationList[i].visited){ //if location visited mark green complete
                     MarkerOptions()
                         .position(pos)
                         .title(j.toString())
                         .snippet(LocationList[i].name.substringAfterLast("."))
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                } else{
+                } else{ //if not visited mark orange
                     MarkerOptions()
                         .position(pos)
                         .title(j.toString())
                         .snippet(LocationList[i].name.substringAfterLast("."))
                         .icon(BitmapDescriptorFactory.defaultMarker(15f))
                 }
-
-
             )
         }
 
 
 
-        if (newmap) {
+        if (newmap) { //check if this is a new map, if so load default location
             // starting Location, student union building
             val latitude = 43.60141111
             val longitude = -116.20187222
@@ -149,11 +165,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation,zoomlevel))
             //map.animateCamera( CameraUpdateFactory.zoomTo( 16.5f ) );
             // [END_EXCLUDE]
-        } else{
+        } else{ // if you have had map open before then reload saved position
             map.moveCamera(CameraUpdateFactory.newCameraPosition(camp))
         }
-
-
         setUpMap() // special
     }
 
@@ -176,85 +190,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 lastLocation = location //get last known location
                 val currentLatLng = LatLng(location.latitude, location.longitude)
 
-// Add check to see if they are on campus, otherwise go to defualt location. geo fences?
+// Add check to see if they are on campus, otherwise go to defualt location. geo fences????
 
                 //map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16.5f))
             }
         }
     }
 
+    // will need to give option to go to activity screen/play audio for markers location
     override fun onMarkerClick(p0: Marker): Boolean {
+
         return false
     }
-
-
-    //Not currently working, several methods depreciated
-/*    private fun startLocationUpdates() {
-        //1
-        if (ActivityCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                LOCATION_PERMISSION_REQUEST_CODE)
-            return
-        }
-        //2
-        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null *//* Looper *//*)
-    }*/
-
-    /*private fun createLocationRequest() {
-        // 1
-        locationRequest = LocationRequest.create()
-        // 2
-        locationRequest.interval = 10000
-        // 3
-        locationRequest.fastestInterval = 5000
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-
-        val builder = LocationSettingsRequest.Builder()
-            .addLocationRequest(locationRequest)
-
-        // 4
-        val client = LocationServices.getSettingsClient(this)
-        val task = client.checkLocationSettings(builder.build())
-
-        // 5
-        task.addOnSuccessListener {
-            locationUpdateState = true
-            startLocationUpdates()
-        }
-        task.addOnFailureListener { e ->
-            // 6
-            if (e is ResolvableApiException) {
-                // Location settings are not satisfied, but this can be fixed
-                // by showing the user a dialog.
-                try {
-                    // Show the dialog by calling startResolutionForResult(),
-                    // and check the result in onActivityResult().
-                    e.startResolutionForResult(this@MainActivity ,
-                        REQUEST_CHECK_SETTINGS)
-                } catch (sendEx: IntentSender.SendIntentException) {
-                    // Ignore the error.
-                }
-            }
-        }
-    }*/
-
-
-
-//    onActivityResult depreciated, need to find alternative
-    // 1
-/*    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CHECK_SETTINGS) {
-            if (resultCode == Activity.RESULT_OK) {
-                locationUpdateState = true
-                startLocationUpdates()
-            }
-        }
-    }*/
-
-// LISTS for locations
 
 
     fun onDestory() {
@@ -262,22 +209,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         Log.d("StateChange","enterOnDestroy")
     }
 
-    // 2
+
     override fun onPause() {
         super.onPause()
-//        fusedLocationClient.removeLocationUpdates(locationCallback)
         Log.d("StateChange","enterOnPause")
     }
 
-    // 3
+
     public override fun onResume() {
         super.onResume()
-        /*if (!locationUpdateState) {
-            startLocationUpdates()
-        }*/
         Log.d("StateChange", "EnterOnResume")
     }
-
 
 
     override fun onSaveInstanceState(outState: Bundle)
@@ -286,26 +228,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         Log.d("StateChange", "enterOnSaveInstanceState")
         // in here we need to save out the data model as a bundle
 
-
         outState.putParcelable("myPosition", map.cameraPosition)
-/*        //save current map state
-        Log.d("Saving", "saved current location in bundle")
-
-        outState.putDouble("long", )
-        outState.putDouble("lat", )
-        outState.putFloat("Zoom", "")
-
-
-        //saving the entire data model!!!!!
-        outState.putParcelable("Places", LocationList)*/
-
-
-        //Log.d("BSUTour", "SAVED Locationlist in bundle")
-        //outState.putPar
-
-
-
     }
+
 
 
 

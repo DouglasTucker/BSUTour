@@ -11,7 +11,8 @@ import java.util.concurrent.TimeUnit
 @Parcelize
 public data class TourLocation(var name: String, var selected: Boolean, var Location: String, var visited: Boolean) : Parcelable
 
-public class ListModel: ArrayList<TourLocation>()   {
+
+public class ListModel: ArrayList<TourLocation>()  {
 
 
     val SimpleTourList = arrayListOf<TourLocation>(
@@ -40,6 +41,7 @@ public class ListModel: ArrayList<TourLocation>()   {
     var ActiveList = SimpleTourList
 
     init {
+
         val nst = Executors.newSingleThreadExecutor()
         nst.execute {
             val length = ActiveList.size;
