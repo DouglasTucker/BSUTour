@@ -53,7 +53,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     var LocationList = ListModel()
 
-
+    //list of boundary lat/long
+    val BoundaryList = Perimeter().boundary()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +74,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         var kadapter: KAdapter = KAdapter(this, LocationList)
 
         kRecyclerView.setAdapter(kadapter)
-
 
 
         /*option = findViewById(R.id.tourselect) as Spinner
