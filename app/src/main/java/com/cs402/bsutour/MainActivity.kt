@@ -1,21 +1,11 @@
 package com.cs402.bsutour
 
-import android.app.Activity
-import android.content.DialogInterface
-import android.content.Intent
-import android.content.IntentSender
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcelable
-import android.os.PersistableBundle
 import android.util.Log
-import android.text.InputType
-import android.view.View
-import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -23,17 +13,9 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import android.widget.Spinner
 import androidx.core.app.ActivityCompat
-import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import kotlinx.android.parcel.Parcelize
-import androidx.activity.result.ActivityResultCallback
 
-import androidx.activity.result.contract.ActivityResultContracts
-
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import com.google.android.gms.maps.model.*
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -45,6 +27,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private lateinit var camp: CameraPosition
     private var newmap = true
     lateinit var geofencingClient: GeofencingClient
+    private val ShowGeoFencePerimeter = true
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
@@ -123,6 +106,20 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
         map.setOnMarkerClickListener(this)
 
+
+        //check circle shows approximate location of geo fence for start location
+        if (ShowGeoFencePerimeter){
+            val circle = googleMap.addCircle(
+                CircleOptions()
+                    .center(LatLng(  43.603842, -116.203303))
+                    .radius(700.0)
+                    .strokeColor(Color.RED)
+                    .strokeWidth(4f)
+            )
+        }
+
+
+
         //goes through model list and adds markers to map
         for(i in 0 until LocationList.size) {
             val latlongf = LocationList[i].Location
@@ -190,9 +187,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 lastLocation = location //get last known location
                 val currentLatLng = LatLng(location.latitude, location.longitude)
 
-// Add check to see if they are on campus, otherwise go to defualt location. geo fences????
 
-                //map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16.5f))
+
+                // Add check to see if they are on campus, otherwise go to defualt location. diy geofence
+                if(isInsideCircle(location.latitude, location.longitude, 43.603842, -116.203303, 0.007))
+                {
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16.5f))
+                }
             }
         }
     }
@@ -232,7 +233,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
 
 
-
+    fun isInsideCircle(x: Double, y: Double, circleX: Double, circleY: Double, circleRadius: Double): Boolean
+    {
+        val absX = Math.pow(Math.abs(x - circleX).toDouble(), 2.0)
+        val absY = Math.pow(Math.abs(y - circleY).toDouble(), 2.0)
+        return Math.sqrt(absX + absY) < circleRadius }
 
 
 }
