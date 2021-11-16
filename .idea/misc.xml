@@ -3,9 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/layout/Activity_main_land.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/activity_main_2.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_map.xml" value="0.134375" />
+        <entry key="app/src/main/res/layout/location_page.xml" value="0.20390625" />
         <entry key="app/src/main/res/layout/practice_item_view.xml" value="0.2351851851851852" />
+        <entry key="app/src/main/res/layout/spinner_item.xml" value="0.1" />
       </map>
     </option>
   </component>

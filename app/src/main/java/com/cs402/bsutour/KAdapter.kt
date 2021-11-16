@@ -58,6 +58,10 @@ public class KAdapter(context: Context, var practice: ArrayList<TourLocation>)
                 sscolor = "#cccccc"
             }
             titleTextView.setBackgroundColor(Color.parseColor(sscolor))
+
+
         }
+
+
     }
 }
