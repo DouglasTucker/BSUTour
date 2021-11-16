@@ -1,12 +1,16 @@
 package com.cs402.bsutour
 
+import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.content.IntentSender
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -14,7 +18,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 
 public class KAdapter(context: Context, var practice: ArrayList<TourLocation>)
     : RecyclerView.Adapter<KAdapter.PracticeHolder>() {
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
             : KAdapter.PracticeHolder {
@@ -25,6 +28,7 @@ public class KAdapter(context: Context, var practice: ArrayList<TourLocation>)
     override fun getItemCount() = practice.size
 
     override fun onBindViewHolder(holder: PracticeHolder, position: Int) {
+
         val apractice = practice[position]
         holder.apply {
             titleTextView.text = apractice.name
@@ -35,6 +39,7 @@ public class KAdapter(context: Context, var practice: ArrayList<TourLocation>)
             }
             titleTextView.setBackgroundColor(Color.parseColor(sscolor))
         }
+
     }
     //inner class important
     inner class PracticeHolder(view: View)
@@ -46,8 +51,11 @@ public class KAdapter(context: Context, var practice: ArrayList<TourLocation>)
             itemView.setOnClickListener(this)
         }
 
+
+
         override fun onClick(v: View) {
             //toggle selection, color shows whats selected
+
             var apos = getBindingAdapterPosition()
 
             kSelect = practice[apos].selected
@@ -59,9 +67,18 @@ public class KAdapter(context: Context, var practice: ArrayList<TourLocation>)
             }
             titleTextView.setBackgroundColor(Color.parseColor(sscolor))
 
+            var intent = Intent(v.getContext(), LocationPage::class.java)
+            intent.putExtra("location_summary", practice[apos].description)
+            intent.putExtra("image", practice[apos].image)
+                v.getContext().startActivity(intent)
+
+
+           /* val intent = Intent(this, LocationPage::class.java).apply {
+                putExtra("location_summary", location?.description)
+                putExtra("image", location?.image)
+            }
+            startActivity(intent)*/
 
         }
-
-
     }
 }
