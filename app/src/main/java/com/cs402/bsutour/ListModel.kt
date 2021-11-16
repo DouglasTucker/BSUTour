@@ -17,7 +17,12 @@ public class ListModel: ArrayList<TourLocation>()  {
 
     val SimpleTourList = arrayListOf<TourLocation>(
         TourLocation("1.\tStudent Union Building",false, "43.60141111,-116.20187222", true,
-            "This is one of the most used buildings on our campus and we recommend you start here on your walk. The SUB houses various student organizations and business offices",
+            "This is one of the most used buildings on our campus and we recommend you start here on your walk. The SUB houses various student organizations and business offices including:\n" +
+                    "\n" +
+                    "Our Games Center (bowling alley, pool tables and air hockey galore)\n\n" +
+                    "The Bronco Shop – make sure to stock up on some blue and orange gear!\n\n" +
+                    "Some of our main food areas which includes Chick-fil-a, Moe’s Southwestern, Tree City Smoothies, Subway, Provisions on Demand (POD) and of course, a Starbucks. If you venture down the hallway, you will end up at the Boise River Cafe, our main cafeteria on campus.\n\n" +
+                    "This building is also home to the Admissions office (shoutout!)",
             "t1"),
         TourLocation("2.\tRec Center",false, "43.60053889,-116.20010000", false,
             "Just across the street from the Student Union, you will find our award-winning, 105,000-square- foot Student Recreation Center. Membership is included in your student fees. It features basketball courts, exercise and weight rooms, racquetball courts, a multipurpose gym, an indoor running track, activity rooms, a 19,000-square-foot aquatics center and one of the largest collegiate climbing walls in the United States.",

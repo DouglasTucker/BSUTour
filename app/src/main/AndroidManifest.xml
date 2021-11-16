@@ -30,7 +30,8 @@
                 android:value="@string/google_maps_key" />
             <activity
                 android:name=".LocationPage"
-                android:exported="true" />
+                android:exported="true"
+                android:screenOrientation="portrait"/>
 
             <activity android:name=".MainActivity"
                 android:exported="true">

@@ -24,12 +24,17 @@ class LocationPage : AppCompatActivity()  {
             text = location
         }
 
+
+
+
         val uri = "@drawable/$image" // where myresource (without the extension) is the file
         val imageResource = resources.getIdentifier(uri, null, packageName)
 
         val imageView = findViewById<ImageView>(R.id.imageView).apply {
             setImageResource(imageResource)
         }
+
+
 
         val lastpage = Intent(this, MainActivity::class.java)
 

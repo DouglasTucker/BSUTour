@@ -238,11 +238,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
 
 
-
-
-
-
-
     fun onDestory() {
         super.onDestroy()
         Log.d("StateChange","enterOnDestroy")
