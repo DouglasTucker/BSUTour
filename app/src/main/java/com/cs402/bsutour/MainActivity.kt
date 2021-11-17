@@ -1,11 +1,19 @@
 package com.cs402.bsutour
 
+import android.content.DialogInterface
+import androidx.appcompat.app.AlertDialog
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Icon
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -17,6 +25,9 @@ import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
 
 import com.google.android.gms.maps.model.*
+import android.graphics.drawable.Drawable
+import android.widget.*
+
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -24,10 +35,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var lastLocation: Location
-    private lateinit var camp: CameraPosition
+    private lateinit var pmap: CameraPosition //previous map
     private var newmap = true
     lateinit var geofencingClient: GeofencingClient
     private val ShowGeoFencePerimeter = true
+
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
@@ -45,12 +57,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         setContentView(R.layout.activity_main)
         Log.d("StateChange", "enterOnCreate")
 
-
         geofencingClient = LocationServices.getGeofencingClient(this)
 
         kRecyclerView =
             findViewById(R.id.Practice_recycler_view) as RecyclerView
         kRecyclerView.layoutManager = LinearLayoutManager(this)
+
 
 
         //insert adapter here
@@ -59,9 +71,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         kRecyclerView.setAdapter(kadapter)
 
 
-        /*option = findViewById(R.id.tourselect) as Spinner
+/*       val option = findViewById(R.id.tourselect) as Spinner
 
         val options = arrayOf("Simple Tour", "Campus Food", "Computer labs")
+
         option.adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, options)
 
         option.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
@@ -79,7 +92,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         // Load saved data
         if (savedInstanceState != null) {
             if(savedInstanceState.containsKey("myPosition")) {
-                camp = savedInstanceState.getParcelable<CameraPosition>("myPosition")!!
+                pmap = savedInstanceState.getParcelable<CameraPosition>("myPosition")!!
                 newmap = false //on map ready now knows to load save instead of default.
             }
         }
@@ -100,12 +113,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
-        //enable zoom and disables directions
+        //enable zoom and disables get directions
         map.getUiSettings().setZoomControlsEnabled(true)
-        map.getUiSettings().setMapToolbarEnabled(false);
+        map.getUiSettings().setMapToolbarEnabled(false)
 
+        //creates a click listener on makers
         map.setOnMarkerClickListener(this)
 
+
+
+        enableUserLocation()
 
         //check circle shows approximate location of geo fence for start location
         if (ShowGeoFencePerimeter){
@@ -118,8 +135,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             )
         }
 
-
-
         //goes through model list and adds markers to map
         for(i in 0 until LocationList.size) {
             val latlongf = LocationList[i].Location
@@ -127,45 +142,67 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             val latitude = latlong[0].toDouble()
             val longitude = latlong[1].toDouble()
             var pos = LatLng(latitude, longitude)
-
-
             var j = i +1   //accounts for difference in index and location number
-            map.addMarker(
+
+
+            var uri = "@drawable/m$j"
+
+            if(LocationList[i].visited){
+                uri = "@drawable/v$j"
+            }
+
+
+
+            val imagemarker = resources.getIdentifier(uri, null, packageName)
+            //val ico = BitmapFactory.decodeResource(this.getResources(), imagemarker)
+
+
+            var marker = map.addMarker(
+
                 if(LocationList[i].visited){ //if location visited mark green complete
                     MarkerOptions()
                         .position(pos)
+                        .alpha(0.6f) //transparincy
                         .title(j.toString())
                         .snippet(LocationList[i].name.substringAfterLast("."))
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                        .icon(BitmapDescriptorFactory.fromResource(imagemarker))
+                        //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+
                 } else{ //if not visited mark orange
                     MarkerOptions()
                         .position(pos)
                         .title(j.toString())
                         .snippet(LocationList[i].name.substringAfterLast("."))
-                        .icon(BitmapDescriptorFactory.defaultMarker(15f))
+                        .icon(BitmapDescriptorFactory.fromResource(imagemarker))
+                        //.icon(BitmapDescriptorFactory.defaultMarker(15f))
                 }
             )
-        }
 
+            marker?.tag = LocationList[i]
+
+            //add geo fence
+
+
+
+        } //end for loop for addign markers
 
 
         if (newmap) { //check if this is a new map, if so load default location
+
             // starting Location, student union building
             val latitude = 43.60141111
             val longitude = -116.20187222
-
-            //set starting location for when map loads
             val startLocation = LatLng(latitude, longitude)
             val zoomlevel = 16.5f
 
-            // [START_EXCLUDE silent]
+            // move camera to starting location of student union
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation,zoomlevel))
-            //map.animateCamera( CameraUpdateFactory.zoomTo( 16.5f ) );
-            // [END_EXCLUDE]
+
+            setUpMap() // checks if on campus
         } else{ // if you have had map open before then reload saved position
-            map.moveCamera(CameraUpdateFactory.newCameraPosition(camp))
+            map.moveCamera(CameraUpdateFactory.newCameraPosition(pmap))
         }
-        setUpMap() // special
+
     }
 
     // MAP STUFF
@@ -178,19 +215,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
             return
         }
-
         map.isMyLocationEnabled = true
 
         fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
-            // Got last known location. In some rare situations this can be null.
+            // Get last known location. In some rare situations this can be null.
             if (location != null) {
                 lastLocation = location //get last known location
                 val currentLatLng = LatLng(location.latitude, location.longitude)
 
-
-
                 // Add check to see if they are on campus, otherwise go to defualt location. diy geofence
-                if(isInsideCircle(location.latitude, location.longitude, 43.603842, -116.203303, 0.007))
+                if(isInsideCircle(location.latitude, location.longitude, 43.603842, -116.203303, 0.008))
                 {
                     map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16.5f))
                 }
@@ -198,11 +232,55 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         }
     }
 
-    // will need to give option to go to activity screen/play audio for markers location
-    override fun onMarkerClick(p0: Marker): Boolean {
 
+    fun enableUserLocation() {
+        if (ActivityCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+            return
+        }
+        map.isMyLocationEnabled = true
+    }
+
+
+    // will need to give option to go to activity screen/play audio for markers location
+    override fun onMarkerClick(marker: Marker): Boolean {
+        val location = marker.tag as? TourLocation
+        /*        Toast.makeText(
+            this,
+            "${marker.title} has been clicked. ${location?.description}",
+            Toast.LENGTH_SHORT
+        ).show()*/
+
+        val intent = Intent(this, LocationPage::class.java).apply {
+            putExtra("location_summary", location?.description)
+            putExtra("image", location?.image)
+            putExtra("latlong", location?.Location)
+        }
+
+
+        val dialogBuilder = AlertDialog.Builder(this)
+
+        dialogBuilder.setMessage("Do you want to view location info page")
+            .setCancelable(false)
+            .setPositiveButton("Proceed", DialogInterface.OnClickListener{
+                dialog, id -> startActivity(intent)
+            })
+            .setNegativeButton("Cancel", DialogInterface.OnClickListener{
+                dialog, id -> dialog.cancel()
+            })
+
+        val alert = dialogBuilder.create()
+        alert.setTitle("Learn More!")
+        alert.show()
+
+
+//        val nextpage = Intent(this, LocationPage::class.java)
+//        startActivity(nextpage)
         return false
     }
+
 
 
     fun onDestory() {
@@ -230,6 +308,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         // in here we need to save out the data model as a bundle
 
         outState.putParcelable("myPosition", map.cameraPosition)
+        outState.putParcelableArrayList("PLACES", LocationList )
+    }
+
+
+    fun LaunchLocation(){
+        val intent = Intent(this, LocationPage::class.java).apply {
+           // putExtra("position", x )
+        }
+        startActivity(intent)
     }
 
 
@@ -240,4 +327,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         return Math.sqrt(absX + absY) < circleRadius }
 
 
+
+
 }
+
+
