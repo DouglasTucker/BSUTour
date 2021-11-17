@@ -1,16 +1,19 @@
 package com.cs402.bsutour
 
 import android.content.DialogInterface
+import androidx.appcompat.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Icon
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
+
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -22,6 +25,9 @@ import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
 
 import com.google.android.gms.maps.model.*
+import android.graphics.drawable.Drawable
+import android.widget.*
+
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -65,9 +71,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         kRecyclerView.setAdapter(kadapter)
 
 
-        /*option = findViewById(R.id.tourselect) as Spinner
+/*       val option = findViewById(R.id.tourselect) as Spinner
 
         val options = arrayOf("Simple Tour", "Campus Food", "Computer labs")
+
         option.adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, options)
 
         option.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
@@ -108,10 +115,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
         //enable zoom and disables get directions
         map.getUiSettings().setZoomControlsEnabled(true)
-        map.getUiSettings().setMapToolbarEnabled(false);
+        map.getUiSettings().setMapToolbarEnabled(false)
 
         //creates a click listener on makers
         map.setOnMarkerClickListener(this)
+
+
 
         enableUserLocation()
 
@@ -133,24 +142,42 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             val latitude = latlong[0].toDouble()
             val longitude = latlong[1].toDouble()
             var pos = LatLng(latitude, longitude)
-
             var j = i +1   //accounts for difference in index and location number
+
+
+            var uri = "@drawable/m$j"
+
+            if(LocationList[i].visited){
+                uri = "@drawable/v$j"
+            }
+
+
+
+            val imagemarker = resources.getIdentifier(uri, null, packageName)
+            //val ico = BitmapFactory.decodeResource(this.getResources(), imagemarker)
+
+
             var marker = map.addMarker(
 
                 if(LocationList[i].visited){ //if location visited mark green complete
                     MarkerOptions()
                         .position(pos)
+                        .alpha(0.6f) //transparincy
                         .title(j.toString())
                         .snippet(LocationList[i].name.substringAfterLast("."))
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                        .icon(BitmapDescriptorFactory.fromResource(imagemarker))
+                        //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+
                 } else{ //if not visited mark orange
                     MarkerOptions()
                         .position(pos)
                         .title(j.toString())
                         .snippet(LocationList[i].name.substringAfterLast("."))
-                        .icon(BitmapDescriptorFactory.defaultMarker(15f))
+                        .icon(BitmapDescriptorFactory.fromResource(imagemarker))
+                        //.icon(BitmapDescriptorFactory.defaultMarker(15f))
                 }
             )
+
             marker?.tag = LocationList[i]
 
             //add geo fence
@@ -220,7 +247,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     // will need to give option to go to activity screen/play audio for markers location
     override fun onMarkerClick(marker: Marker): Boolean {
         val location = marker.tag as? TourLocation
-/*        Toast.makeText(
+        /*        Toast.makeText(
             this,
             "${marker.title} has been clicked. ${location?.description}",
             Toast.LENGTH_SHORT
@@ -229,13 +256,31 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         val intent = Intent(this, LocationPage::class.java).apply {
             putExtra("location_summary", location?.description)
             putExtra("image", location?.image)
+            putExtra("latlong", location?.Location)
         }
-        startActivity(intent)
+
+
+        val dialogBuilder = AlertDialog.Builder(this)
+
+        dialogBuilder.setMessage("Do you want to view location info page")
+            .setCancelable(false)
+            .setPositiveButton("Proceed", DialogInterface.OnClickListener{
+                dialog, id -> startActivity(intent)
+            })
+            .setNegativeButton("Cancel", DialogInterface.OnClickListener{
+                dialog, id -> dialog.cancel()
+            })
+
+        val alert = dialogBuilder.create()
+        alert.setTitle("Learn More!")
+        alert.show()
+
 
 //        val nextpage = Intent(this, LocationPage::class.java)
 //        startActivity(nextpage)
         return false
     }
+
 
 
     fun onDestory() {
@@ -282,4 +327,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         return Math.sqrt(absX + absY) < circleRadius }
 
 
+
+
 }
+
+

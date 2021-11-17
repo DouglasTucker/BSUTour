@@ -43,7 +43,7 @@ public class KAdapter(context: Context, var practice: ArrayList<TourLocation>)
     }
     //inner class important
     inner class PracticeHolder(view: View)
-        : RecyclerView.ViewHolder(view), View.OnClickListener {
+        : RecyclerView.ViewHolder(view), View.OnClickListener, View.OnLongClickListener {
         val titleTextView: TextView = view.findViewById(R.id.practice_name)
         var kSelect: Boolean = false
 
@@ -67,10 +67,13 @@ public class KAdapter(context: Context, var practice: ArrayList<TourLocation>)
             }
             titleTextView.setBackgroundColor(Color.parseColor(sscolor))
 
-            var intent = Intent(v.getContext(), LocationPage::class.java)
-            intent.putExtra("location_summary", practice[apos].description)
-            intent.putExtra("image", practice[apos].image)
+            if(!kSelect){
+                var intent = Intent(v.getContext(), LocationPage::class.java)
+                intent.putExtra("location_summary", practice[apos].description)
+                intent.putExtra("image", practice[apos].image)
+                intent.putExtra("latlong", practice[apos].Location)
                 v.getContext().startActivity(intent)
+            }
 
 
            /* val intent = Intent(this, LocationPage::class.java).apply {
@@ -79,6 +82,20 @@ public class KAdapter(context: Context, var practice: ArrayList<TourLocation>)
             }
             startActivity(intent)*/
 
+        }
+
+        override fun onLongClick(v: View?): Boolean {
+            var apos = getBindingAdapterPosition()
+
+
+/*            var intent = Intent(v?.getContext(), LocationPage::class.java)
+            intent.putExtra("location_summary", practice[apos].description)
+            intent.putExtra("image", practice[apos].image)
+            intent.putExtra("latlong", practice[apos].Location)
+            if (v != null) {
+                v.getContext().startActivity(intent)
+            }*/
+            return false
         }
     }
 }

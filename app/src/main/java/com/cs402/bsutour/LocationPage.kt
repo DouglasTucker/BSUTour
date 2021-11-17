@@ -19,6 +19,7 @@ class LocationPage : AppCompatActivity()  {
 
         val location = intent.getStringExtra("location_summary")
         val image = intent.getStringExtra("image")
+        val latlong = intent.getStringExtra("latlong")
 
         val textView = findViewById<TextView>(R.id.textView).apply{
             text = location
@@ -35,14 +36,16 @@ class LocationPage : AppCompatActivity()  {
         }
 
 
-
         val lastpage = Intent(this, MainActivity::class.java)
+
+
 
         val backButton = findViewById<Button>(R.id.button)
 
         // Move to previous activty
         backButton.setOnClickListener { v: View? ->
-            startActivity(lastpage)
+            finish()
+            //startActivity(lastpage)
         }
 
 
