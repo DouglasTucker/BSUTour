@@ -4,10 +4,7 @@ import android.content.DialogInterface
 import androidx.appcompat.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Icon
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -25,7 +22,6 @@ import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
 
 import com.google.android.gms.maps.model.*
-import android.graphics.drawable.Drawable
 import android.widget.*
 
 
@@ -45,9 +41,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
     }
 
-
-    var LocationList = ListModel()
-
+    var LocationList = ListModel(0)
+    var pop = 0
     //list of boundary lat/long
     val BoundaryList = Perimeter().boundary()
 
@@ -57,35 +52,42 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         setContentView(R.layout.activity_main)
         Log.d("StateChange", "enterOnCreate")
 
+        pop = intent.getIntExtra("listy", 0)
+        LocationList = ListModel(pop)
         geofencingClient = LocationServices.getGeofencingClient(this)
 
         kRecyclerView =
             findViewById(R.id.Practice_recycler_view) as RecyclerView
         kRecyclerView.layoutManager = LinearLayoutManager(this)
 
-
-
         //insert adapter here
         var kadapter: KAdapter = KAdapter(this, LocationList)
 
         kRecyclerView.setAdapter(kadapter)
 
-
-/*       val option = findViewById(R.id.tourselect) as Spinner
-
+        val option = findViewById(R.id.tourselect) as Spinner
         val options = arrayOf("Simple Tour", "Campus Food", "Computer labs")
 
-        option.adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, options)
+        val intent = Intent(this, MainActivity::class.java)
 
+        option.adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, options)
+        option.setSelection(pop)
         option.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                TODO()
+
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                TODO()
+                if(pop != position){
+                    pop = position
+                    Log.d("Test", "Here we go again $pop")
+                    intent.putExtra("listy", pop)
+                    finish()
+                    startActivity(intent)
+                }
+
             }
-        }*/
+        }
 
 
 
@@ -270,14 +272,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             .setNegativeButton("Cancel", DialogInterface.OnClickListener{
                 dialog, id -> dialog.cancel()
             })
+        if (pop == 0) {
+            val alert = dialogBuilder.create()
+            alert.setTitle("Learn More!")
+            alert.show()
+        }
 
-        val alert = dialogBuilder.create()
-        alert.setTitle("Learn More!")
-        alert.show()
-
-
-//        val nextpage = Intent(this, LocationPage::class.java)
-//        startActivity(nextpage)
         return false
     }
 
@@ -330,5 +330,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
 
 }
+
 
 

@@ -1,18 +1,14 @@
 package com.cs402.bsutour
 
 import android.os.Parcelable
-import android.util.Log
 import kotlinx.android.parcel.Parcelize
-import org.json.JSONObject
-import java.net.URL
 import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
 
 @Parcelize
 public data class TourLocation(var name: String, var selected: Boolean, var Location: String, var visited: Boolean, var description: String, var image: String) : Parcelable
 
 
-public class ListModel: ArrayList<TourLocation>()  {
+public class ListModel(pop: Int) : ArrayList<TourLocation>()  {
 
 
     val SimpleTourList = arrayListOf<TourLocation>(
@@ -63,17 +59,137 @@ public class ListModel: ArrayList<TourLocation>()  {
     )
 
     val CampusFoodList = arrayListOf<TourLocation>(
-        TourLocation("1.\tAlbertsons Library",false, "43.60393611,-116.20353333", false, "Test Description", "t5"),
+        TourLocation("1.\tBoise River Cafe (SUB)",false, "43.60148,-116.20083",
+            false, "HOURS:\n"+
+                    "Monday\t7AM-9PM\n"+
+                    "Tuesday\t7AM-9PM\n" +
+                    "Wednesday\t7AM-9PM\n" +
+                    "Thursday\t7AM-9PM\n" +
+                    "Friday\t7AM-8PM\n" +
+                    "Saturday\t10AM-8PM\n" +
+                    "Sunday\t710AM-9PM\n",
+            "f0"),
+        TourLocation("2.\tSouthFork Market",false, "43.60115,-116.20253",
+            false, "HOURS:\n"+
+                    "Monday\t11AM-9PM\n"+
+                    "Tuesday\t11AM-9PM\n" +
+                    "Wednesday\t11AM-9PM\n" +
+                    "Thursday\t11AM-9PM\n" +
+                    "Friday\t11AM-9PM\n" +
+                    "Saturday\tClosed\n" +
+                    "Sunday\tClosed\n",
+            "f0"),
+        TourLocation("3.\tStarbucks (SUB)",false, "43.60189,-116.20180",
+            false, "HOURS:\n"+
+                    "Monday\t7:30AM-7PM\n"+
+                    "Tuesday\t7:30AM-7PM\n" +
+                    "Wednesday\t7:30AM-7PM\n" +
+                    "Thursday\t7:30AM-7PM\n" +
+                    "Friday\t7:30AM-7PM\n" +
+                    "Saturday\t8AM-4PM\n" +
+                    "Sunday\t8AM-4PM\n",
+
+            "f0"),
+        TourLocation("4.\tSubway (SUB)",false, "43.60199,-116.20145",
+            false, "HOURS:\n"+
+                    "Monday\t8AM-7PM\n"+
+                    "Tuesday\t8AM-7PM\n" +
+                    "Wednesday\t8AM-7PM\n" +
+                    "Thursday\t8AM-7PM\n" +
+                    "Friday\t8AM-7PM\n" +
+                    "Saturday\t11AM-6PM\n" +
+                    "Sunday\t11AM-6PM\n",
+            "f0"),
+        TourLocation("5.\tEinstein Bros. Bagels",false, "43,604967, -116.206179",
+            false, "HOURS:\n"+
+                    "Monday\t7:30AM-4PM\n"+
+                    "Tuesday\t7:30AM-4PM\n" +
+                    "Wednesday\t7:30AM-4PM\n" +
+                    "Thursday\t7:30AM-4PM\n" +
+                    "Friday\t8AM-3PM\n" +
+                    "Saturday\tClosed\n" +
+                    "Sunday\tClosed\n",
+            "f0"),
+        TourLocation("6.\tGuru Donuts",false, "43.603893,-116.203382",
+            false, "HOURS:\n"+
+                    "Monday\t7AM-4PM\n"+
+                    "Tuesday\t7AM-4PM\n" +
+                    "Wednesday\t7AM-4PM\n" +
+                    "Thursday\t7AM-4PM\n" +
+                    "Friday\t7AM-4PM\n" +
+                    "Saturday\t9AM-5PM\n" +
+                    "Sunday\t10:30AM-6PM\n",
+            "f0"),
+        TourLocation("7.\tPaddles Up Poke",false, "43.60583,-116.20591",
+            false, "HOURS:\n"+
+                    "Monday\t11AM-5PM\n"+
+                    "Tuesday\t11AM-5PM\n" +
+                    "Wednesday\t11AM-5PM\n" +
+                    "Thursday\t11AM-5PM\n" +
+                    "Friday\t11AM-5PM\n" +
+                    "Saturday\tClosed\n" +
+                    "Sunday\tClosed\n",
+            "f0"),
+        TourLocation("6.\tPoppy Seed Cafe",false, "43.60574,-116.21046",
+            false, "HOURS:\n"+
+                    "Monday\t8AM-6PM\n"+
+                    "Tuesday\t8AM-6PM\n" +
+                    "Wednesday\t8AM-6PM\n" +
+                    "Thursday\t8AM-6PM\n" +
+                    "Friday\t8AM-2PM\n" +
+                    "Saturday\tClosed\n" +
+                    "Sunday\tClosed\n",
+            "f0"),
+        TourLocation("7.\tChick-fil-A",false, "43.60190,-116.20155",
+            false, "HOURS:\n"+
+                    "Monday\t6:30AM-10PM\n"+
+                    "Tuesday\t6:30AM-10PM\n" +
+                    "Wednesday\t6:30AM-10PM\n" +
+                    "Thursday\t6:30AM-10PM\n" +
+                    "Friday\t6:30AM-10PM\n" +
+                    "Saturday\t6:30AM-10PM\n" +
+                    "Sunday\tClosed\n",
+            "f0"),
+        TourLocation("8.\tTree City & Smoothie Cafe",false, "43.60199,-116.20163",
+            false, "HOURS:\n"+
+                    "Monday\t9AM-3PM\n"+
+                    "Tuesday\t9AM-3PM\n" +
+                    "Wednesday\t9AM-3PM\n" +
+                    "Thursday\t9AM-3PM\n" +
+                    "Friday\t9AM-3PM\n" +
+                    "Saturday\tClosed\n" +
+                    "Sunday\tClosed\n",
+            "f0"),
+        TourLocation("9.\tPapa John's Pizza",false, "43.604940,-116.206303",
+            false, "HOURS:\n"+
+                    "Monday\t10:30AM-9PM\n"+
+                    "Tuesday\t10:30AM-9PM\n" +
+                    "Wednesday\t10:30AM-9PM\n" +
+                    "Thursday\t10:30AM-9PM\n" +
+                    "Friday\t10:30AM-9PM\n" +
+                    "Saturday\tClosed\n" +
+                    "Sunday\tClosed\n",
+            "f0"),
+
     )
 
     val ComputerLabList = arrayListOf<TourLocation>(
         TourLocation("1.\tStudent Union Building",false, "43.60141111,-116.20187222", false, "Test Description", "t1"),
     )
 
-
     var ActiveList = SimpleTourList
 
+
+
     init {
+
+        if(pop == 0){
+            ActiveList = SimpleTourList
+        } else if(pop == 1){
+            ActiveList = CampusFoodList
+        } else{
+            ActiveList = ComputerLabList
+        }
 
         val nst = Executors.newSingleThreadExecutor()
         nst.execute {

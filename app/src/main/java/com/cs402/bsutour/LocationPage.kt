@@ -26,8 +26,6 @@ class LocationPage : AppCompatActivity()  {
         }
 
 
-
-
         val uri = "@drawable/$image" // where myresource (without the extension) is the file
         val imageResource = resources.getIdentifier(uri, null, packageName)
 
@@ -35,17 +33,12 @@ class LocationPage : AppCompatActivity()  {
             setImageResource(imageResource)
         }
 
-
-        val lastpage = Intent(this, MainActivity::class.java)
-
-
-
         val backButton = findViewById<Button>(R.id.button)
 
         // Move to previous activty
         backButton.setOnClickListener { v: View? ->
             finish()
-            //startActivity(lastpage)
+
         }
 
 
