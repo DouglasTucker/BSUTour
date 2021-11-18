@@ -68,7 +68,7 @@ public class ListModel(pop: Int) : ArrayList<TourLocation>()  {
                     "Friday\t7AM-8PM\n" +
                     "Saturday\t10AM-8PM\n" +
                     "Sunday\t710AM-9PM\n",
-            "f0"),
+            "f1"),
         TourLocation("2.\tSouthFork Market",false, "43.60115,-116.20253",
             false, "HOURS:\n"+
                     "Monday\t11AM-9PM\n"+
@@ -78,7 +78,7 @@ public class ListModel(pop: Int) : ArrayList<TourLocation>()  {
                     "Friday\t11AM-9PM\n" +
                     "Saturday\tClosed\n" +
                     "Sunday\tClosed\n",
-            "f0"),
+            "f2"),
         TourLocation("3.\tStarbucks (SUB)",false, "43.60189,-116.20180",
             false, "HOURS:\n"+
                     "Monday\t7:30AM-7PM\n"+
@@ -89,7 +89,7 @@ public class ListModel(pop: Int) : ArrayList<TourLocation>()  {
                     "Saturday\t8AM-4PM\n" +
                     "Sunday\t8AM-4PM\n",
 
-            "f0"),
+            "f3"),
         TourLocation("4.\tSubway (SUB)",false, "43.60199,-116.20145",
             false, "HOURS:\n"+
                     "Monday\t8AM-7PM\n"+
@@ -99,7 +99,7 @@ public class ListModel(pop: Int) : ArrayList<TourLocation>()  {
                     "Friday\t8AM-7PM\n" +
                     "Saturday\t11AM-6PM\n" +
                     "Sunday\t11AM-6PM\n",
-            "f0"),
+            "f4"),
         TourLocation("5.\tEinstein Bros. Bagels",false, "43,604967, -116.206179",
             false, "HOURS:\n"+
                     "Monday\t7:30AM-4PM\n"+
@@ -109,7 +109,7 @@ public class ListModel(pop: Int) : ArrayList<TourLocation>()  {
                     "Friday\t8AM-3PM\n" +
                     "Saturday\tClosed\n" +
                     "Sunday\tClosed\n",
-            "f0"),
+            "f5"),
         TourLocation("6.\tGuru Donuts",false, "43.603893,-116.203382",
             false, "HOURS:\n"+
                     "Monday\t7AM-4PM\n"+
@@ -119,7 +119,7 @@ public class ListModel(pop: Int) : ArrayList<TourLocation>()  {
                     "Friday\t7AM-4PM\n" +
                     "Saturday\t9AM-5PM\n" +
                     "Sunday\t10:30AM-6PM\n",
-            "f0"),
+            "f6"),
         TourLocation("7.\tPaddles Up Poke",false, "43.60583,-116.20591",
             false, "HOURS:\n"+
                     "Monday\t11AM-5PM\n"+
@@ -129,8 +129,8 @@ public class ListModel(pop: Int) : ArrayList<TourLocation>()  {
                     "Friday\t11AM-5PM\n" +
                     "Saturday\tClosed\n" +
                     "Sunday\tClosed\n",
-            "f0"),
-        TourLocation("6.\tPoppy Seed Cafe",false, "43.60574,-116.21046",
+            "f7"),
+        TourLocation("8.\tPoppy Seed Cafe",false, "43.60574,-116.21046",
             false, "HOURS:\n"+
                     "Monday\t8AM-6PM\n"+
                     "Tuesday\t8AM-6PM\n" +
@@ -139,8 +139,8 @@ public class ListModel(pop: Int) : ArrayList<TourLocation>()  {
                     "Friday\t8AM-2PM\n" +
                     "Saturday\tClosed\n" +
                     "Sunday\tClosed\n",
-            "f0"),
-        TourLocation("7.\tChick-fil-A",false, "43.60190,-116.20155",
+            "f8"),
+        TourLocation("9.\tChick-fil-A",false, "43.60190,-116.20155",
             false, "HOURS:\n"+
                     "Monday\t6:30AM-10PM\n"+
                     "Tuesday\t6:30AM-10PM\n" +
@@ -149,8 +149,8 @@ public class ListModel(pop: Int) : ArrayList<TourLocation>()  {
                     "Friday\t6:30AM-10PM\n" +
                     "Saturday\t6:30AM-10PM\n" +
                     "Sunday\tClosed\n",
-            "f0"),
-        TourLocation("8.\tTree City & Smoothie Cafe",false, "43.60199,-116.20163",
+            "f9"),
+        TourLocation("10.\tTree City & Smoothie Cafe",false, "43.60199,-116.20163",
             false, "HOURS:\n"+
                     "Monday\t9AM-3PM\n"+
                     "Tuesday\t9AM-3PM\n" +
@@ -159,8 +159,8 @@ public class ListModel(pop: Int) : ArrayList<TourLocation>()  {
                     "Friday\t9AM-3PM\n" +
                     "Saturday\tClosed\n" +
                     "Sunday\tClosed\n",
-            "f0"),
-        TourLocation("9.\tPapa John's Pizza",false, "43.604940,-116.206303",
+            "f10"),
+        TourLocation("11.\tPapa John's Pizza",false, "43.604940,-116.206303",
             false, "HOURS:\n"+
                     "Monday\t10:30AM-9PM\n"+
                     "Tuesday\t10:30AM-9PM\n" +
@@ -169,7 +169,7 @@ public class ListModel(pop: Int) : ArrayList<TourLocation>()  {
                     "Friday\t10:30AM-9PM\n" +
                     "Saturday\tClosed\n" +
                     "Sunday\tClosed\n",
-            "f0"),
+            "f11"),
 
     )
 

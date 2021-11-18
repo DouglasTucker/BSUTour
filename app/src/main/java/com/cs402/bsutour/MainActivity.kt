@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
 
     var LocationList = ListModel(0)
-    var pop = 0
+    var listIndex = 0
     //list of boundary lat/long
     val BoundaryList = Perimeter().boundary()
 
@@ -52,8 +52,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         setContentView(R.layout.activity_main)
         Log.d("StateChange", "enterOnCreate")
 
-        pop = intent.getIntExtra("listy", 0)
-        LocationList = ListModel(pop)
+        listIndex = intent.getIntExtra("listy", 0)
+        LocationList = ListModel(listIndex)
         geofencingClient = LocationServices.getGeofencingClient(this)
 
         kRecyclerView =
@@ -71,17 +71,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         val intent = Intent(this, MainActivity::class.java)
 
         option.adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, options)
-        option.setSelection(pop)
+        option.setSelection(listIndex)
         option.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if(pop != position){
-                    pop = position
-                    Log.d("Test", "Here we go again $pop")
-                    intent.putExtra("listy", pop)
+                if(listIndex != position){
+                    listIndex = position
+                    Log.d("Test", "Here we go again $listIndex")
+                    intent.putExtra("listy", listIndex)
                     finish()
                     startActivity(intent)
                 }
@@ -272,7 +272,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             .setNegativeButton("Cancel", DialogInterface.OnClickListener{
                 dialog, id -> dialog.cancel()
             })
-        if (pop == 0) {
+        if (listIndex == 0) {
             val alert = dialogBuilder.create()
             alert.setTitle("Learn More!")
             alert.show()
