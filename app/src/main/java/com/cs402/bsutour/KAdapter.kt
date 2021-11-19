@@ -72,6 +72,14 @@ public class KAdapter(context: Context, var practice: ArrayList<TourLocation>)
                 intent.putExtra("location_summary", practice[apos].description)
                 intent.putExtra("image", practice[apos].image)
                 intent.putExtra("latlong", practice[apos].Location)
+
+                if(practice[apos].image.first() == 't'){
+                    intent.putExtra("listIndex", 0)
+                } else{
+                    intent.putExtra("listIndex", 1)
+                }
+
+
                 v.getContext().startActivity(intent)
             }
 

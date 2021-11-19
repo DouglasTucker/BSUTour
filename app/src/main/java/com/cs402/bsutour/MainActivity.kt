@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import androidx.appcompat.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.graphics.Color
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
@@ -49,7 +50,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        //setContentView(R.layout.activity_main)
+        val orientation = resources.configuration.orientation
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            setContentView(R.layout.activity_main_horizontal)
+        } else {
+            setContentView(R.layout.activity_main)
+        }
+
         Log.d("StateChange", "enterOnCreate")
 
         listIndex = intent.getIntExtra("listy", 0)
@@ -259,6 +267,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             putExtra("location_summary", location?.description)
             putExtra("image", location?.image)
             putExtra("latlong", location?.Location)
+            putExtra("listIndex", listIndex)
         }
 
 
