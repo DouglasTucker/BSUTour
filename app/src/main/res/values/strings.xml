@@ -9,6 +9,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="back_to_map">Back to map</string>
+    <string name="play_pause">Play/Pause</string>
+    <string name="play">play</string>
     <string-array name="TourOptions">
         <item>Simple tour</item>
         <item>Campus food</item>
