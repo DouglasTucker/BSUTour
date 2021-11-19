@@ -88,7 +88,6 @@ public class ListModel(pop: Int) : ArrayList<TourLocation>()  {
                     "Friday\t7:30AM-7PM\n" +
                     "Saturday\t8AM-4PM\n" +
                     "Sunday\t8AM-4PM\n",
-
             "f3"),
         TourLocation("4.\tSubway (SUB)",false, "43.60199,-116.20145",
             false, "HOURS:\n"+
@@ -100,7 +99,7 @@ public class ListModel(pop: Int) : ArrayList<TourLocation>()  {
                     "Saturday\t11AM-6PM\n" +
                     "Sunday\t11AM-6PM\n",
             "f4"),
-        TourLocation("5.\tEinstein Bros. Bagels",false, "43,604967, -116.206179",
+        TourLocation("5.\tEinstein Bros. Bagels",false, "43.604967, -116.206179",
             false, "HOURS:\n"+
                     "Monday\t7:30AM-4PM\n"+
                     "Tuesday\t7:30AM-4PM\n" +
@@ -170,7 +169,6 @@ public class ListModel(pop: Int) : ArrayList<TourLocation>()  {
                     "Saturday\tClosed\n" +
                     "Sunday\tClosed\n",
             "f11"),
-
     )
 
     val ComputerLabList = arrayListOf<TourLocation>(
