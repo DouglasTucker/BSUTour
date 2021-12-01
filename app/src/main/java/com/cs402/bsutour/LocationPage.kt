@@ -33,11 +33,13 @@ class LocationPage : AppCompatActivity() {
 
         val ura = "@raw/$image"
         val audioResource = resources.getIdentifier(ura, null, packageName)
-        mediaPlayer = MediaPlayer.create(this,audioResource)
-        mediaPlayer?.setOnPreparedListener {
-            println("READY TO GO")
-        }
 
+        if (ListIndex == 0) {
+            mediaPlayer = MediaPlayer.create(this, audioResource)
+            mediaPlayer?.setOnPreparedListener {
+                println("READY TO GO")
+            }
+        }
         val textView = findViewById<TextView>(R.id.textView).apply {
             text = location
         }
