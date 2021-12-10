@@ -192,6 +192,22 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
             //add geo fence
 
+            Geofence.Builder()
+                // Set the request ID of the geofence. This is a string to identify this
+                // geofence.
+                .setRequestId(LocationList[i].name)
+
+                // Set the circular region of this geofence.
+                .setCircularRegion(
+                    latitude,
+                    longitude,
+                    20F
+                )
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                .build()
+
+
 
 
         } //end for loop for addign markers

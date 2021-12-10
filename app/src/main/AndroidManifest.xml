@@ -43,6 +43,10 @@
 
             </activity>
 
+            <receiver
+                android:name=".GeofenceBroadcastReceiver"
+                android:enabled="true"
+                android:exported="true" />
 
 
         </application>

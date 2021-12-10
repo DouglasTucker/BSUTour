@@ -67,7 +67,7 @@ public class KAdapter(context: Context, var practice: ArrayList<TourLocation>)
             }
             titleTextView.setBackgroundColor(Color.parseColor(sscolor))
 
-            if(!kSelect){
+            //if(!kSelect){
                 var intent = Intent(v.getContext(), LocationPage::class.java)
                 intent.putExtra("location_summary", practice[apos].description)
                 intent.putExtra("image", practice[apos].image)
@@ -79,9 +79,8 @@ public class KAdapter(context: Context, var practice: ArrayList<TourLocation>)
                     intent.putExtra("listIndex", 1)
                 }
 
-
                 v.getContext().startActivity(intent)
-            }
+            //}
 
 
            /* val intent = Intent(this, LocationPage::class.java).apply {
