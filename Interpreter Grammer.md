@@ -2,8 +2,18 @@
 ## "Not case sensitive"
 
 
-### PROGRAM
--
+### PROGRAM 
+<pre>
+Program				:identifier {VARS} {Function Block} {Function} StatementList
+</pre>
+
+### VARS
+<pre>
+VAR_List			:VAR 
+VAR				:
+				|
+				|
+</pre>	
 
 ### Expressions
 <pre>
@@ -59,6 +69,7 @@ SubprogramControlStatements	: FB_Invocation
 FB_Invocation			: FBName ‘(’ [FB_InputAssignment { ‘,’ FB_InputAssignent}] ‘)’
 FB_InputAssignment		: VariableName ‘:=’ Expression
 </pre>
+
 
 ### Selection statements
 <pre>
