@@ -7,7 +7,7 @@
 
 ### Expressions
 <pre>
-Expression                      : XOR_Expression {'OR' XOR_Expression}
+Expression                   : XOR_Expression {'OR' XOR_Expression}
 XOR_Expression             : AND_Expression {‘XOR’ AND_Expression}
 AND_Expression             : Comparison { (‘&’ | ‘AND’) Comparison}
 Comparision                    : EquExpression { ( ‘=’ | ‘<>’) EquExpression}
