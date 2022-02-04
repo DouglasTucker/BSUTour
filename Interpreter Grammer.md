@@ -83,6 +83,7 @@ CaseStatement			: ‘CASE’ Expression ‘OF’ CaseElement
 				   {CaseElement}
 				   [‘ELSE’ StatementList]
 				   ‘END_CASE’
+
 CaseElement			: CaseList ‘:’ StatementList
 CaseList			: CaseListElement { ‘,’ CaseListElement}
 CaseListElement			: Subrange | SignedInteger
@@ -96,18 +97,22 @@ IterationStatement		: ForStatement
 				| RepeatStatement
 				| ExitStatement
 ForStatement			: ‘FOR’ ControlVariable ‘:=’ ForList ‘DO’
-				     StementList
-				     ‘END_FOR’
-ControlVariable		: Identifier
+				   StementList
+				   ‘END_FOR’
+
+ControlVariable			: Identifier
 ForList				: Expression ‘TO’ Expression
-				     [ ‘BY’ Expression]
-WhileStatement		: ‘WHILE’ Expression ‘DO’
-				     StatementList
-				      ‘END_WHILE’
-RepeatStatement		: ‘REPEAT’
-				     StatementList
-				     ‘UNTIL’ EXPRESSION
-				      ‘END_REPEAT’
+				   [ ‘BY’ Expression]
+
+WhileStatement			: ‘WHILE’ Expression ‘DO’
+				   StatementList
+				   ‘END_WHILE’
+
+RepeatStatement			: ‘REPEAT’
+				   StatementList
+				   ‘UNTIL’ EXPRESSION
+				   ‘END_REPEAT’
+
 ExitStatment			: ‘EXIT’
 
 </pre>
