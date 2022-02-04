@@ -34,3 +34,69 @@ PrimaryExpression		: Constant
 ST_FunctionInputs		: ST_FunctionInput { ‘,’ ST_FunctionInput}
 ST_FunctionInput		: [VariableName ‘:=’] Expression
 </pre>
+
+### Statements
+<pre>
+StatementList			: Statement ';' {Statement ';'}
+Statement			: NIL
+				| Assignment Statement
+				| SubprogramControlStatement
+				| SelectionStatement
+				| IterationStatement
+</pre>
+
+
+### Assignment Statements
+<pre>
+AssignmentStatement		: Variable ':=' Expression
+</pre>
+
+
+### Subprogram Control Statements
+<pre>
+SubprogramControlStatements	: FB_Invocation
+				| ‘Return’
+FB_Invocation			: FBName ‘(’ [FB_InputAssignment { ‘,’ FB_InputAssignent}] ‘)’
+FB_InputAssignment		: VariableName ‘:=’ Expression
+</pre>
+
+### Selection statements
+<pre>
+SelectionStatement		: IfStatement
+				| CaseStatement
+IfStatement			: ‘IF’ Expression ‘THEN’ StatementList 
+				   { ‘ElSIF’ Expression ‘THEN' StatementList } 
+				   [‘Else’ StatementList] ‘END_IF’
+
+CaseStatement			: ‘CASE’ Expression ‘OF’ CaseElement
+				   {CaseElement}
+				   [‘ELSE’ StatementList]
+				   ‘END_CASE’
+CaseElement			: CaseList ‘:’ StatementList
+CaseList			: CaseListElement { ‘,’ CaseListElement}
+CaseListElement			: Subrange | SignedInteger
+</pre>
+
+
+### Iteration Statements
+<pre>
+IterationStatement		: ForStatement
+				| WhileStatement
+				| RepeatStatement
+				| ExitStatement
+ForStatement			: ‘FOR’ ControlVariable ‘:=’ ForList ‘DO’
+				     StementList
+				     ‘END_FOR’
+ControlVariable		: Identifier
+ForList				: Expression ‘TO’ Expression
+				     [ ‘BY’ Expression]
+WhileStatement		: ‘WHILE’ Expression ‘DO’
+				     StatementList
+				      ‘END_WHILE’
+RepeatStatement		: ‘REPEAT’
+				     StatementList
+				     ‘UNTIL’ EXPRESSION
+				      ‘END_REPEAT’
+ExitStatment			: ‘EXIT’
+
+</pre>
