@@ -1,13 +1,15 @@
-#  <center>Expected Interpreter Grammar</center> Structure
-## <center>"Not case sensitive"</center>
+#  Expected Interpreter Grammar Structure
+## "Not case sensitive"
 
 
 ### PROGRAM
 -
 
 ### Expressions
-Expression                   : XOR_Expression {'OR' XOR_Expression}
+Expression >> : XOR_Expression {'OR' XOR_Expression}
+
 XOR_Expression         : AND_Expression {‘XOR’ AND_Expression}
+
 AND_Expression         : Comparison { (‘&’ | ‘AND’) Comparison}
 Comparision                : EquExpression { ( ‘=’ | ‘<>’) EquExpression}
 EquExpression            : AddExpression {ComparisonOperator AddExpression}
