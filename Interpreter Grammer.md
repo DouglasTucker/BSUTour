@@ -4,16 +4,28 @@
 
 ### PROGRAM 
 <pre>
-Program				:identifier {VARS} {Function Block} {Function} StatementList
+Program				:'PROGRAM' identifier {VAR_list} {Function_Block} {Function} StatementList 'END_PROGRAM'
 </pre>
 
 ### VARS
 <pre>
-VAR_List			:VAR 
-VAR				:
-				|
-				|
+VAR_List			: VAR {VAR_List} 
+VAR				: 'VAR'{RETAIN} DeclarationList 'END_VAR'
+				| 'VAR_INPUT' {'RETAIN'} DeclarationList 'END_VAR'
+				| 'VAR_OUTPUT' {'RETAIN'} DeclarationList 'END_VAR'
+				| 'VAR_IN_OUT' {'RETAIN'} DeclarationList 'END_VAR'
+				| 'VAR_EXTERNAL' {'RETAIN'} DeclarationList 'END_VAR'
+				| 'VAR_GLOBAL' {'RETAIN'} DeclarationList 'END_VAR'
+				
+DeclarationList			: variable ':' type ';' {DeclarationList}
 </pre>	
+
+
+### Function_Block
+
+### Function
+
+
 
 ### Expressions
 <pre>
