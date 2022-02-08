@@ -19,6 +19,23 @@ To obtain a good structure, it is a good rule of thumb to only have only 20 - 25
 
 “The difference between functions and program modules is that functions often perform calculations or data processing on individual components, whilst program modules is the splitting up of the entire program. The program modules use relevant functions and function blocks to solve the specific tasks.”
 
-Excerpt From: Tom Mejer Antonsen. “PLC Controls with Structured Text (ST), V3.” Apple Books. 
+Excerpt From: Tom Mejer Antonsen. “PLC Controls with Structured Text (ST), V3.” 
+
 
 #### Functions
+“Functions are important building blocks in a PLC program. A function contains a limited number of code lines to be used (‘called’ and executed) again and again.”
+
+“The advantage of using functions is that the PLC code can be reused. PLC code reuse reduces the size of the program, creates fewer syntax faults and is easier to work with for other programmers.”
+
+Excerpt From: Tom Mejer Antonsen. “PLC Controls with Structured Text (ST), V3.” 
+
+
+“There are two function types in a PLC:
+-Function (FC)
+-Function block (FB)
+Function (FC) PLC code excludes static data, which means that all local variables lose their value when the function ends. The variables are initialized again the next time the function is ‘called’. The function typically carries out a mathematical calculation and returns the calculated value.
+
+Function block (FB) PLC code which includes static data. The local variables retain their values between each ‘call’ to the function. An example could be a function used as an hour counter (number of operation hours, also called TACHO HOURS) on a motor which requires that the local variables retain their values once the function has ended. The function could also count the number of motor starts per hour or time until the next motor service.”
+
+Excerpt From: Tom Mejer Antonsen. “PLC Controls with Structured Text (ST), V3.” Apple Books. 
+
