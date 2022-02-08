@@ -37,5 +37,25 @@ Function (FC) PLC code excludes static data, which means that all local variable
 
 Function block (FB) PLC code which includes static data. The local variables retain their values between each ‘call’ to the function. An example could be a function used as an hour counter (number of operation hours, also called TACHO HOURS) on a motor which requires that the local variables retain their values once the function has ended. The function could also count the number of motor starts per hour or time until the next motor service.
 
+Template
+<pre>
+FUNCTION <Name> : <RetDataType>
+VAR_INPUT
+   <Variables>
+END_VAR
+VAR_OUTPUT
+   <Variables>
+END_VAR
+VAR_IN_OUT
+   <Variables>
+END_VAR
+VAR
+   <Variable> //local variables
+END_VAR
+   <Implementation> //write code here
+   <Name> := 123; //set return value
+END_FUNCTION
+</pre>
 
+### Program module and function module are separated
 
