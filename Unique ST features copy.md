@@ -47,7 +47,7 @@ Function block (FB) PLC code which includes static data. The local variables ret
 
 Template
 <pre>
-FUNCTION <Name> : <RetDataType>
+FUNCTION &ltName&gt : &ltRetDataType&gt
 VAR_INPUT
    &ltVariables&gt
 END_VAR
