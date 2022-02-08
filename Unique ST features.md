@@ -27,10 +27,12 @@ Functions are important building blocks in a PLC program. A function contains a 
 The advantage of using functions is that the PLC code can be reused. PLC code reuse reduces the size of the program, creates fewer syntax faults and is easier to work with for other programmers.
 
 There are two function types in a PLC:
+
 <pre>
 	-Function (FC)
 	-Function block (FB)
 </pre>
+
 Function (FC) PLC code excludes static data, which means that all local variables lose their value when the function ends. The variables are initialized again the next time the function is ‘called’. The function typically carries out a mathematical calculation and returns the calculated value.
 
 Function block (FB) PLC code which includes static data. The local variables retain their values between each ‘call’ to the function. An example could be a function used as an hour counter (number of operation hours, also called TACHO HOURS) on a motor which requires that the local variables retain their values once the function has ended. The function could also count the number of motor starts per hour or time until the next motor service.
