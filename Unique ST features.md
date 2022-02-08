@@ -13,7 +13,7 @@ programs are split up as follows
 
 -Function blocks
 </pre> 
-
+#### Program module
 “A PLC program must be split up into many small program pieces in order to have a good and clear program structure. The small program pieces are called program modules, functions and function blocks, and they each contain a small piece of PLC code and is a building block, to be used or reused whenever needed.
 To obtain a good structure, it is a good rule of thumb to only have only 20 - 25 lines of PLC code in each program module, function or function block.”
 
@@ -21,3 +21,4 @@ To obtain a good structure, it is a good rule of thumb to only have only 20 - 25
 
 Excerpt From: Tom Mejer Antonsen. “PLC Controls with Structured Text (ST), V3.” Apple Books. 
 
+#### Functions
