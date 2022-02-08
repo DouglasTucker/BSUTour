@@ -3,6 +3,14 @@
 
 ### not case sensitive
 
+#### Comments
+Structured text has two types of comments
+<pre>
+line comment 	// commented text
+
+block comment 	(* commented text *)
+</pre>
+
 ### Program module and function module are separated
 <pre>
 programs are split up as follows
@@ -57,5 +65,5 @@ END_VAR
 END_FUNCTION
 </pre>
 
-### Program module and function module are separated
+
 
