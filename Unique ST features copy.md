@@ -49,7 +49,7 @@ Template
 <pre>
 FUNCTION <Name> : <RetDataType>
 VAR_INPUT
-   <Variables>
+   \<Variables\>
 END_VAR
 VAR_OUTPUT
    <Variables>
