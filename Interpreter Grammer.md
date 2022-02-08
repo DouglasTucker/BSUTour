@@ -4,8 +4,9 @@
 
 ### PROGRAM 
 <pre>
-Program				:'PROGRAM' identifier {VAR_list} {Function_Block} {Function} StatementList 'END_PROGRAM'
+Program				:'PROGRAM' identifier {VAR_list} StatementList 'END_PROGRAM'
 </pre>
+
 
 ### VARS
 <pre>
@@ -22,11 +23,11 @@ DeclarationList			: variable ':' type ';' {DeclarationList}
 
 
 ### Function Block
-<pre>
+<pre> TBD
 </pre>
 
 ### Function
-<pre>
+<pre> TBD
 </pre>
 
 
@@ -53,8 +54,8 @@ PowerExpression			: UnaryExpression {‘**’ UnaryExpression}
 UnaryExpression			: [UnaryOperator] PrimaryExpression
 UnaryOperator			: ‘-‘
 				| ‘NOT’
-PrimaryExpression		: Constant
-				| Variable
+PrimaryExpression		: constant
+				| variable
 				| ‘(‘ Expression ‘)’
 				| FunctionName ‘(‘ [ST_FunctionInputs] ‘)’
 ST_FunctionInputs		: ST_FunctionInput { ‘,’ ST_FunctionInput}
@@ -74,7 +75,7 @@ Statement			: NIL
 
 ### Assignment Statements
 <pre>
-AssignmentStatement		: Variable ':=' Expression
+AssignmentStatement		: variable ':=' Expression
 </pre>
 
 
@@ -130,5 +131,4 @@ RepeatStatement			: ‘REPEAT’
 				   ‘END_REPEAT’
 
 ExitStatment			: ‘EXIT’
-
 </pre>
