@@ -4,7 +4,7 @@
 
 #### PROGRAM 
 <pre>
-Program				:'PROGRAM' identifier {VAR_list} StatementList 'END_PROGRAM'
+Program				:'PROGRAM' ```diffidentifier''' {VAR_list} StatementList 'END_PROGRAM'
 </pre>
 
 
