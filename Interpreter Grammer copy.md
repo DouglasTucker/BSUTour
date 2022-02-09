@@ -2,10 +2,18 @@
 ## "Not case sensitive"
 
 
-### PROGRAM 
+#### PROGRAM 
 <pre>
 Program				:'PROGRAM' identifier {VAR_list} StatementList 'END_PROGRAM'
 </pre>
+
+
+#### FUNCTION
+<pre>
+Function			:'FUNCTION' identifier ':' type {VAR_list} StatementList returnStatement 'END_FUNCTION'
+returnStatement			: identifier ':=' Expression ';'
+</pre>
+
 
 
 ### VARS
