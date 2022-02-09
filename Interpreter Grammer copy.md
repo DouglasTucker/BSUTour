@@ -4,7 +4,7 @@
 
 #### PROGRAM 
 <pre>
-Program				:'PROGRAM' ```diff + identifier``` {VAR_list} StatementList 'END_PROGRAM'
+Program				:'PROGRAM' ```diff + identifier ``` {VAR_list} StatementList 'END_PROGRAM'
 </pre>
 
 
