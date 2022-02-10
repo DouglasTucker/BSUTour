@@ -1,9 +1,8 @@
 # Interpreter Grammar Structure
 ## Subset04
-### expected to be able to handle variables assignments using +, -, *, / expressions
+### Expanded grammer to handle variables assignments using +, -, *, / expressions
 
 
-#### PROGRAM 
 <pre>
 Program				:'PROGRAM' ProgramName {VAR_list} StatementList 'END_PROGRAM'
 </pre>
