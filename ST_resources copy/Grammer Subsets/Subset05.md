@@ -1,5 +1,6 @@
-#  Expected Interpreter Grammar Structure
-## "Not case sensitive"
+#  Interpreter Grammar Structure
+## Subset05
+### Expanded grammer to use AND and OR in expressions
 
 
 #### PROGRAM 
