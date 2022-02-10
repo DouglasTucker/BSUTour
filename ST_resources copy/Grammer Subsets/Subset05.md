@@ -25,14 +25,14 @@ XOR_Expression			: AND_Expression {‘XOR’ AND_Expression}
 AND_Expression			: AddExpression { (‘&’ | ‘AND’) AddExpression}
 AddExpression			: Term {AddOperator Term}
 AddOperator			: ‘+’
-						| ‘-’
-Term					: PrimaryExpression {MultiplyOperator PrimaryExpression}
+				| ‘-’
+Term				: PrimaryExpression {MultiplyOperator PrimaryExpression}
 MultiplyOperator		: ‘*’
-					| ’/’
-					| ‘MOD’
+				| ’/’
+				| ‘MOD’
 PrimaryExpression		: constant
-					| variable
-					| ‘(‘ Expression ‘)’
+				| variable
+				| ‘(‘ Expression ‘)’
 </pre>
 
 ### Statements
