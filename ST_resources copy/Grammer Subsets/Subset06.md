@@ -1,6 +1,6 @@
-#  Expected Interpreter Grammar Structure
-## "Not case sensitive"
-
+#  Interpreter Grammar Structure
+## Subset06
+### Expanded grammer to use negative values, NOT, and If statements
 
 #### PROGRAM 
 <pre>
