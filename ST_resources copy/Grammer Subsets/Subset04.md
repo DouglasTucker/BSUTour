@@ -23,13 +23,13 @@ DeclarationList			: variable ':' type ';' {DeclarationList}
 Expression			: AddExpression
 AddExpression			: Term {AddOperator Term}
 AddOperator			: ‘+’
-						| ‘-’
+				| ‘-’
 Term					: PrimaryExpression {MultiplyOperator PrimaryExpression}
 MultiplyOperator		: ‘*’
-						| ’/’
+				| ’/’
 PrimaryExpression		: constant
-							| variable
-						| ‘(‘ Expression ‘)’
+				| variable
+				| ‘(‘ Expression ‘)’
 </pre>
 
 ### Statements
