@@ -22,7 +22,7 @@
 <br> Expanded to While loops and comparisons
 
 - [Subset_08](./Subset08.md) (IN PROGRESS)
-- <br>Expanded types of VAR variables
+<br>Expanded types of VAR variables
 
 - [Subset_09](./Subset09.md) (IN PROGRESS)
 <br> Expanded to handling Function calls
