@@ -1,6 +1,6 @@
 # Subset Grammer Summary
 
-- [Subset_01] (./Subset01.md) 
+- [Subset_01](./Subset01.md) 
 <br>Able to handle variable assignment from constant
 
 - [Subset_02] (./Subset02.md) 
