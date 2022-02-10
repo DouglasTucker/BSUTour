@@ -5,14 +5,14 @@
 
 #### PROGRAM 
 <pre>
-Program					:'PROGRAM' ProgramName {VAR_list} StatementList 'END_PROGRAM'
+Program				:'PROGRAM' ProgramName {VAR_list} StatementList 'END_PROGRAM'
 </pre>
 
 
 ### VARS
 <pre>
-VAR_List				: VAR {VAR_List} 
-VAR						: 'VAR' DeclarationList 'END_VAR'
+VAR_List			: VAR {VAR_List} 
+VAR				: 'VAR' DeclarationList 'END_VAR'
 								
 DeclarationList			: variable ':' type ';'
 </pre>	
@@ -22,8 +22,8 @@ DeclarationList			: variable ':' type ';'
 ### Statements
 <pre>
 StatementList			: Statement ';' {Statement ';'}
-Statement				: NIL
-						| Assignment Statement
+Statement			: NIL
+				| Assignment Statement
 
 </pre>
 
