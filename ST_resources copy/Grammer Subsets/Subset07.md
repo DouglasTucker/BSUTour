@@ -1,5 +1,6 @@
-#  Expected Interpreter Grammar Structure
-## "Not case sensitive"
+#  Interpreter Grammar Structure
+## Subset07
+### Expanded grammer to be able to use comparisions in expressions and use while loops
 
 
 #### PROGRAM 
