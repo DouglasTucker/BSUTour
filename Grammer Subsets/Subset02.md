@@ -30,7 +30,7 @@ PrimaryExpression		: constant
 ### Statements
 <pre>
 StatementList			: Statement ';' {StatementList}
-						| NIL
+				| NIL
 Statement			: NIL
 				| Assignment Statement
 </pre>
