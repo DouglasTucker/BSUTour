@@ -22,7 +22,7 @@ DeclarationList			: variable ':' type ';'
 ### Statements
 <pre>
 StatementList			: Statement ';' {StatementList}
-						| NIL
+				| NIL
 Statement			: NIL
 				| Assignment Statement
 
