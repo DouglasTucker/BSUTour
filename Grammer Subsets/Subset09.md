@@ -63,7 +63,7 @@ ST_FunctionInput		: [VariableName ‘:=’] Expression
 ### Statements
 <pre>
 StatementList			: Statement ';' {StatementList}
-						| NIL
+				| NIL
 Statement			: NIL
 				| Assignment Statement
 				| SubprogramControlStatement
