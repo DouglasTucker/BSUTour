@@ -4,7 +4,7 @@ PROGRAM 07_While_Nested
 	a : Int;
         b : Int;
         c : Int;
-	    ST_TESTING_RESULT : bool;
+	ST_TESTING_RESULT : bool;
     END_VAR
 	a := 0;
         b := 0;
