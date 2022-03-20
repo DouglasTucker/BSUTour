@@ -1,11 +1,11 @@
 //Test used to confirm nested while loops
 PROGRAM 07_While_Nested
     VAR
-	    a : Int;
+	a : Int;
         b : Int;
         c : Int;
     END_VAR
-	    a := 0;
+	a := 0;
         b := 0;
         c := 0;
         WHILE (a < 5) DO
