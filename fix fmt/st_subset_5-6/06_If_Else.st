@@ -1,10 +1,10 @@
 //Testing simplest form of an If Else statement
 PROGRAM 06_If_Else
     VAR
-	    a : Int;
+	a : Int;
         b : Int;
     END_VAR
-	    a := 0;
+	a := 0;
         b := 0;
         IF a < 5 THEN
             a :=  5;
