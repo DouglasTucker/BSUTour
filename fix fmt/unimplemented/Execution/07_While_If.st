@@ -1,13 +1,13 @@
 // Tests that while and IF statements work inside eachother
 PROGRAM 07_While_If
     VAR
-	    a : Int;
+	a : Int;
         b : Int;
         c : Int;
         d : Int;
         ST_TESTING_RESULT : bool;
     END_VAR
-	    a := 0;
+	a := 0;
         b := 0;
         c := 0;
         d := 0;
