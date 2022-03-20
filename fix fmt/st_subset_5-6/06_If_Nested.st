@@ -1,11 +1,11 @@
 //Testing nested form of an If statement
 PROGRAM 06_If_Nested
     VAR
-	    a : Int;
+	a : Int;
         b : Int;
         c : Int;
     END_VAR
-	    a := 0;
+	a := 0;
         b := 0;
         c := 0;
         IF a < 5 THEN
