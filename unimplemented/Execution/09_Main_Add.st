@@ -1,7 +1,7 @@
 //Testing simple function call to add two numbers together
 PROGRAM 09_Main_Add
     VAR
-	    a : int;
+	a : int;
         b : int;
         result0 : int;
         result1 : int;
@@ -13,7 +13,7 @@ PROGRAM 09_Main_Add
         b := 5;
 
         // four different ways of function input
-        result0 := SimpleAddFunction(10, 15) // expects outputs of 25
+        result0 := SimpleAddFunction(10, 10+5) // expects outputs of 25
 
         result1 := SimpleAddFunction(Input1 := 5, Input2 := 10) // expects outputs of 15
 
