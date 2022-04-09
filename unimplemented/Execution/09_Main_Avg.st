@@ -1,7 +1,7 @@
 //Testing simple function call to get average of two numbers
 PROGRAM 09_Main_Avg
     VAR
-	    a : real;
+	a : real;
         b : real;
         avg0 : real;
         avg1 : real;
@@ -13,7 +13,7 @@ PROGRAM 09_Main_Avg
         b := 6;
 
         // four different ways of function input
-        avg1 := ValueAverageFunction(10, 15) // expects 12.5
+        avg1 := ValueAverageFunction(10, 10+5) // expects 12.5
 
         avg2 := ValueAverageFunction(Value1 := 5, Value2 := 10) // expects 7.5
 
