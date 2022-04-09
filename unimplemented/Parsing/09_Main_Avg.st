@@ -1,7 +1,7 @@
 //Testing simple function call to get average of two numbers
 PROGRAM 09_Main_Avg
     VAR
-	    a : real;
+	a : real;
         b : real;
         avg0 : real;
         avg1 : real;
